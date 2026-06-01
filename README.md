@@ -1,62 +1,73 @@
-# Nexus — AI-Powered Smart Career Platform
+# React + TypeScript + Vite
 
-Nexus is a next-generation, AI-powered career matching platform that seamlessly connects top industry talent with leading companies worldwide. 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🚀 Features
+Currently, two official plugins are available:
 
-### For Job Seekers
-- **Smart Matching:** AI-driven job recommendations based on skills, experience, and career goals.
-- **Unified Profile:** A single, comprehensive profile that acts as your dynamic resume.
-- **Real-Time Tracking:** Track your application status (Reviewed, Shortlisted, Interviewing, Offered) in real-time.
-- **One-Click Apply:** Streamlined application process to apply for multiple roles instantly.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-### For Employers & Recruiters
-- **Streamlined Dashboard:** Manage all your job postings and applicants from a single, powerful dashboard.
-- **Intelligent Screening:** Quickly filter candidates based on match percentage, skills, and experience.
-- **Applicant Tracking System (ATS):** Built-in tools to move candidates through different stages of the hiring pipeline.
-- **Analytics:** View insights on job post performance and applicant demographics.
+## React Compiler
 
-## 🛠 Tech Stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- **Frontend:** React 19, Vite, Tailwind CSS v4, Framer Motion for animations.
-- **UI Components:** Shadcn UI, Lucide React (Icons).
-- **Routing:** React Router DOM v7.
-- **Styling:** Premium SaaS aesthetic with custom glassmorphism and gradient text utilities.
+## Expanding the ESLint configuration
 
-## 💻 Local Development
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-To run the Nexus platform locally on your machine:
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Rajesh-Koppisetty/Job_Board.git
-   cd Job_Board/frontend
-   ```
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-2. **Install Dependencies:**
-   ```bash
-   npm install
-   ```
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-3. **Start the Development Server:**
-   ```bash
-   npm run dev
-   ```
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-4. **Access the application:**
-   Open your browser and navigate to `http://localhost:5173`.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-## 🚢 CI/CD & Deployment
-
-This project utilizes **GitHub Actions** for Continuous Integration and Continuous Deployment (CI/CD). 
-Every push to the `main` branch automatically triggers a pipeline that builds the React application and deploys it directly to **Vercel**.
-
-To configure this in your own fork:
-1. Ensure you have a Vercel account.
-2. Add the following secrets to your GitHub repository (`Settings > Secrets and variables > Actions`):
-   - `VERCEL_TOKEN`: Your personal Vercel access token.
-   - `VERCEL_ORG_ID`: Your Vercel organization ID.
-   - `VERCEL_PROJECT_ID`: Your Vercel project ID.
-
-## 📄 License
-© 2026 Nexus. All rights reserved.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
