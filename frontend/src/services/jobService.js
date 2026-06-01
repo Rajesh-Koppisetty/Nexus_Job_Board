@@ -1,52 +1,106 @@
-import api from './api'
+/**
+ * jobService.js
+ *
+ * All API exports now use localDbService instead of the Spring Boot backend.
+ * Response shape is { data: ... } to stay compatible with existing page components.
+ */
+
+import {
+  authLogin,
+  authRegister,
+  getMyProfile,
+  updateMyProfile,
+  searchJobs,
+  getJobById,
+  getRelatedJobs,
+  saveJob,
+  unsaveJob,
+  getSavedJobs,
+  applyToJob,
+  getMyApplications,
+  getRecruiterDashboard,
+  createCompany,
+  getMyCompanies,
+  createJob,
+  getMyJobs,
+  updateJob,
+  deleteJob,
+  getRecruiterApplications,
+  getJobApplications,
+  updateApplicationStatus,
+  getAdminDashboard,
+  getAllUsers,
+  deleteUser,
+  getNotifications,
+  markNotificationRead,
+} from './localDbService'
+
+// ─── Wrap helpers ─────────────────────────────────────────────────────────────
+// Pages access responses as `{ data }` (was axios convention). We preserve that.
+
+const wrap = (promise) => promise.then((data) => ({ data }))
+
+// ─── Auth ─────────────────────────────────────────────────────────────────────
 
 export const authApi = {
-  register: (data) => api.post('/auth/register', data),
-  login: (data) => api.post('/auth/login', data),
-  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
-  resetPassword: (token, newPassword) => api.post('/auth/reset-password', { token, newPassword }),
+  login: (payload) => wrap(authLogin(payload)),
+  register: (payload) => wrap(authRegister(payload)),
+  // No real email server — these are no-ops that show success
+  forgotPassword: async () => ({ data: { message: 'If this email exists, a reset link has been sent.' } }),
+  resetPassword: async () => ({ data: { message: 'Password reset successfully.' } }),
 }
+
+// ─── Users ────────────────────────────────────────────────────────────────────
 
 export const userApi = {
-  getProfile: () => api.get('/users/me'),
-  updateProfile: (data) => api.put('/users/me', data),
+  getProfile: () => wrap(getMyProfile()),
+  updateProfile: (data) => wrap(updateMyProfile(data)),
 }
+
+// ─── Jobs ─────────────────────────────────────────────────────────────────────
 
 export const jobApi = {
-  search: (params) => api.get('/jobs', { params }),
-  getById: (id) => api.get(`/jobs/${id}`),
-  getRelated: (id) => api.get(`/jobs/${id}/related`),
-  save: (id) => api.post(`/jobs/${id}/save`),
-  unsave: (id) => api.delete(`/jobs/${id}/save`),
-  getSaved: (page = 0, size = 12) => api.get('/jobs/saved', { params: { page, size } }),
+  search: (params) => wrap(searchJobs(params)),
+  getById: (id) => wrap(getJobById(id)),
+  getRelated: (id) => wrap(getRelatedJobs(id)),
+  save: (id) => wrap(saveJob(id)),
+  unsave: (id) => wrap(unsaveJob(id)),
+  getSaved: (page = 0, size = 12) => wrap(getSavedJobs(page, size)),
 }
+
+// ─── Applications ─────────────────────────────────────────────────────────────
 
 export const applicationApi = {
-  apply: (data) => api.post('/applications', data),
-  getMine: (page = 0, size = 10) => api.get('/applications/me', { params: { page, size } }),
+  apply: (data) => wrap(applyToJob(data)),
+  getMine: (page = 0, size = 10) => wrap(getMyApplications(page, size)),
 }
+
+// ─── Recruiter ────────────────────────────────────────────────────────────────
 
 export const recruiterApi = {
-  getDashboard: () => api.get('/recruiter/dashboard'),
-  createCompany: (data) => api.post('/recruiter/companies', data),
-  getCompanies: () => api.get('/recruiter/companies'),
-  createJob: (data) => api.post('/recruiter/jobs', data),
-  getJobs: (page = 0, size = 10) => api.get('/recruiter/jobs', { params: { page, size } }),
-  updateJob: (id, data) => api.put(`/recruiter/jobs/${id}`, data),
-  deleteJob: (id) => api.delete(`/recruiter/jobs/${id}`),
-  getApplications: (page = 0, size = 10) => api.get('/recruiter/applications', { params: { page, size } }),
-  getJobApplications: (jobId) => api.get(`/recruiter/jobs/${jobId}/applications`),
-  updateApplicationStatus: (id, status) => api.patch(`/recruiter/applications/${id}/status`, { status }),
+  getDashboard: () => wrap(getRecruiterDashboard()),
+  createCompany: (data) => wrap(createCompany(data)),
+  getCompanies: () => wrap(getMyCompanies()),
+  createJob: (data) => wrap(createJob(data)),
+  getJobs: (page = 0, size = 10) => wrap(getMyJobs(page, size)),
+  updateJob: (id, data) => wrap(updateJob(id, data)),
+  deleteJob: (id) => wrap(deleteJob(id)),
+  getApplications: (page = 0, size = 10) => wrap(getRecruiterApplications(page, size)),
+  getJobApplications: (jobId) => wrap(getJobApplications(jobId)),
+  updateApplicationStatus: (id, status) => wrap(updateApplicationStatus(id, status)),
 }
+
+// ─── Admin ────────────────────────────────────────────────────────────────────
 
 export const adminApi = {
-  getDashboard: () => api.get('/admin/dashboard'),
-  getUsers: () => api.get('/admin/users'),
-  deleteUser: (id) => api.delete(`/admin/users/${id}`),
+  getDashboard: () => wrap(getAdminDashboard()),
+  getUsers: () => wrap(getAllUsers()),
+  deleteUser: (id) => wrap(deleteUser(id)),
 }
+
+// ─── Notifications ────────────────────────────────────────────────────────────
 
 export const notificationApi = {
-  getAll: (page = 0, size = 20) => api.get('/notifications', { params: { page, size } }),
-  markRead: (id) => api.patch(`/notifications/${id}/read`),
+  getAll: (page = 0, size = 20) => wrap(getNotifications(page, size)),
+  markRead: (id) => wrap(markNotificationRead(id)),
 }
-

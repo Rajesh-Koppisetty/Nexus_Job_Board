@@ -27,7 +27,7 @@ export function RegisterPage() {
     setLoading(true)
     try {
       await register(form)
-      navigate('/dashboard')
+      navigate('/login')
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed')
     } finally {
@@ -48,7 +48,7 @@ export function RegisterPage() {
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Create account</CardTitle>
-            <CardDescription>Join TalentFlow today</CardDescription>
+            <CardDescription>Join Nexus today</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">

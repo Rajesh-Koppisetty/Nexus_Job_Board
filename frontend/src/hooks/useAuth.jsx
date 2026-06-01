@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { authApi, userApi } from '@/services/jobService'
+import { getCurrentUserId } from '@/services/localDbService'
 
 const AuthContext = createContext(undefined)
 
@@ -23,10 +24,22 @@ export function AuthProvider({ children }) {
   }
 
   const refreshUser = async () => {
-    if (!token) return
-    const { data } = await userApi.getProfile()
-    setUser(data)
-    localStorage.setItem('user', JSON.stringify(data))
+    const uid = getCurrentUserId()
+    if (!uid) return
+    try {
+      const { data } = await userApi.getProfile()
+      const userData = {
+        id: data.id,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: data.role,
+      }
+      setUser(userData)
+      localStorage.setItem('user', JSON.stringify(userData))
+    } catch {
+      // ignore refresh errors
+    }
   }
 
   const login = async (email, password) => {
@@ -50,7 +63,7 @@ export function AuthProvider({ children }) {
     const init = async () => {
       const stored = localStorage.getItem('user')
       if (stored) setUser(JSON.parse(stored))
-      if (token) {
+      if (localStorage.getItem('token')) {
         try {
           await refreshUser()
         } catch {
@@ -60,7 +73,7 @@ export function AuthProvider({ children }) {
       setLoading(false)
     }
     init()
-  }, [token]) // include token dependency as suggested by linter
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <AuthContext.Provider

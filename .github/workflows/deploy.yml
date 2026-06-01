@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD — Frontend Only
 
 on:
   push:
@@ -7,30 +7,9 @@ on:
     branches: [main, master]
 
 env:
-  JAVA_VERSION: '17'
   NODE_VERSION: '20'
 
 jobs:
-  backend:
-    name: Build & Test Backend
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: temurin
-          cache: maven
-
-      - name: Build and test
-        run: mvn clean verify -B
-
   frontend:
     name: Build Frontend
     runs-on: ubuntu-latest
@@ -53,12 +32,10 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:8080/api' }}
 
   deploy-frontend:
     name: Deploy to Vercel
-    needs: [backend, frontend]
+    needs: [frontend]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
 

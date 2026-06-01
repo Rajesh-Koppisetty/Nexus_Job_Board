@@ -42,7 +42,7 @@ export function LoginPage() {
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>Sign in to your TalentFlow account</CardDescription>
+            <CardDescription>Sign in to your Nexus account</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">

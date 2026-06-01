@@ -44,7 +44,7 @@ const testimonials = [
     name: 'Sarah Jenkins',
     role: 'Senior Frontend Engineer',
     company: 'Stripe',
-    text: 'TalentFlow completely streamlined my job search. Within 5 days of updating my profile, I got matched with three elite companies and secured an offer.',
+    text: 'Nexus completely streamlined my job search. Within 5 days of updating my profile, I got matched with three elite companies and secured an offer.',
     stars: 5,
   },
   {
@@ -87,16 +87,16 @@ export function HomePage() {
     <div className="overflow-hidden">
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 -z-10 overflow-hidden bg-background">
           <motion.div
-            animate={{ scale: [1, 1.08, 1], rotate: [0, 3, 0] }}
-            transition={{ duration: 18, repeat: Infinity }}
-            className="absolute top-20 left-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.05, 1], rotate: [0, 5, 0], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-primary/20 blur-[120px] mix-blend-multiply dark:mix-blend-screen"
           />
           <motion.div
-            animate={{ scale: [1.08, 1, 1.08] }}
-            transition={{ duration: 14, repeat: Infinity }}
-            className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-accent/10 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.1, 1], rotate: [0, -5, 0], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-accent/20 blur-[120px] mix-blend-multiply dark:mix-blend-screen"
           />
         </div>
 
@@ -106,12 +106,12 @@ export function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4.5 py-1.5 rounded-full glass border border-white/10 text-xs font-semibold text-primary mb-6 shadow-sm shadow-primary/5">
+            <div className="inline-flex items-center gap-2 px-4.5 py-1.5 rounded-full glass border border-white/10 text-xs font-semibold text-primary mb-6 shadow-sm shadow-primary/10">
               <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse" />
               Next-Gen AI-Powered Job Matchmaker
             </div>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
-              Accelerate Your <span className="gradient-text">Dream Career</span>
+              Accelerate Your <span className="gradient-text font-extrabold drop-shadow-sm">Dream Career</span>
               <br />with Intelligent Flow
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
@@ -260,7 +260,7 @@ export function HomePage() {
       {/* Interactive Workflow Section */}
       <section className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-3 tracking-tight">How TalentFlow Works</h2>
+          <h2 className="text-3xl font-bold mb-3 tracking-tight">How Nexus Works</h2>
           <p className="text-muted-foreground mb-10 max-w-lg mx-auto">
             Discover a highly coordinated and fully automated flow designed for both hiring and applying
           </p>

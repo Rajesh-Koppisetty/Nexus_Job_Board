@@ -29,7 +29,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} TalentFlow. All rights reserved.
+          © {new Date().getFullYear()} Nexus. All rights reserved.
         </div>
       </div>
     </footer>
